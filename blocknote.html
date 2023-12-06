@@ -1,0 +1,98 @@
+<html>
+    <head>
+        <style>
+            body{
+                background: linear-gradient(45deg, #08001f, red);
+            }
+            #h1-element{
+                color: white;
+                text-align: center;
+                padding-bottom: 25px;
+                padding-top: 25px;
+                border-bottom: 3px white solid;
+            }
+            #h3-element{
+                color: red;
+                text-align: center;
+            }
+            .input-element{
+                background-color: white;
+                border-radius: 25px;
+                width: 400px;
+                display: grid;
+                place-items: center;
+                place-content: center;
+                margin: auto;
+            }
+            #button-element{
+                border: 2px red solid;
+                margin-top: 15px;
+                background: linear-gradient(45deg, #08001f, red);
+                border-radius: 10px;
+                color: white;
+                font-size: 30px;
+                cursor: pointer;
+                font-weight: 300;
+            }
+            .newParagraph{
+                color: white;
+                text-align: center;
+                padding-bottom: 25px;
+                padding-top: 25px;
+                border: 3px white solid;
+                border-radius: 15px;
+            }
+            img{
+                position: absolute;
+                right: 15px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="app">
+            <h1 id="h1-element">Block Notes App</h1>
+            <div class="input-element">
+                <h3 id="h3-element">Add a Note</h3>
+                <button id="button-element" onclick="add()">Add</button>
+            </div>
+            <div id="added-element"></div>
+        </div>
+        <script>
+            let addedElement = document.getElementById("added-element");
+            let deleteElement;
+            let newInputElement;
+            function add(){
+                newInputElement = document.createElement("p");
+                deleteElement = document.createElement("img");
+                deleteElement.src = "delete.png";
+                newInputElement.classList.add("newParagraph");
+                newInputElement.setAttribute("contenteditable", "true");
+                addedElement.appendChild(newInputElement);
+                newInputElement.appendChild(deleteElement);
+                update();
+            }
+            addedElement.addEventListener("click", function(e) {
+                    if (e.target.tagName == "IMG"){
+                        e.target.parentElement.remove();
+                        update();
+                    }
+                    else if (e.target.tagName == "P"){
+                        let para = document.querySelectorAll(".newParagraph");
+                        para.forEach(input => {
+                            input.onkeyup = function(){
+                                update();
+                            }
+                        });
+                    }
+            })
+            function update(){
+                localStorage.setItem("newdata", addedElement.innerHTML);
+            }
+            function show(){
+                addedElement.innerHTML = localStorage.getItem("newdata");
+            }
+            show();
+        </script>
+    </body>
+</html>
